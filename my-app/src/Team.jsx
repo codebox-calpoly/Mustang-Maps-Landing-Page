@@ -113,9 +113,9 @@ const TEAM = [
     initials: 'RF',
     name: 'Rodney Fujiyama',
     role: 'Developer',
-    year: 'Year Here',
-    major: 'Major Here',
-    funFact: 'Fun fact here.',
+    year: '1st Year',
+    major: 'Computer Science',
+    funFact: 'I have a lot of allergies.',
   },
 ];
 
