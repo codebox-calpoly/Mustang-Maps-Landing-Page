@@ -4,10 +4,6 @@ import './Team.css';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/mustangmaps/id6762173770';
 
-/* ─── Team data ───────────────────────────────────────────────────────────────
-   To update: edit name, role, year, major, and funFact for each member.
-   Photos: add team photos to your /public folder.
-─────────────────────────────────────────────────────────────────────────────── */
 const TEAM = [
   {
     photo: '/idhika.png',
@@ -61,7 +57,7 @@ const TEAM = [
     role: 'Developer',
     year: '1st Year',
     major: 'Computer Science',
-    funFact: 'Fun fact here.',
+    funFact: 'I produce music.',
   },
   {
     photo: '/scout.png',
@@ -97,7 +93,7 @@ const TEAM = [
     role: 'Developer',
     year: '1st Year',
     major: 'Computer Science',
-    funFact: 'Fun fact here.',
+    funFact: 'My team won the FRC Robotics Championship last year.',
   },
   {
     photo: '/aswath.png',
