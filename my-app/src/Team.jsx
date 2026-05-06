@@ -75,7 +75,7 @@ const TEAM = [
     role: 'Developer',
     year: '1st Year',
     major: 'Computer Engineering',
-    funFact: 'I am all caught up to all of One Piece.',
+    funFact: 'I am caught up to all of One Piece.',
   },
   {
     photo: '/ally.png',
