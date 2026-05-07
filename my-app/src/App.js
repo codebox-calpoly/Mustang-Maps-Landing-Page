@@ -7,31 +7,37 @@ const APP_STORE_URL = 'https://apps.apple.com/us/app/mustangmaps/id6762173770';
 const FEATURES = [
   {
     icon: '/MMbuilding.png',
+    preview: '/route-preview.png',
     title: 'Campus Routes',
     desc: 'Find clear walking paths across campus. No more zigzagging or guessing.',
   },
   {
     icon: '/MMamenity.png',
+    preview: '/keyAmenities.jpeg',
     title: 'Key Amenities',
     desc: 'Find bathrooms, water fountains, and printer — shown across the whole campus at once.',
   },
   {
     icon: '/MMclass.png',
+    preview: '/classroomFinder.jpeg',
     title: 'Classroom Finder',
     desc: "Know which floor and room you're heading to before you walk through the door. Never be late on week one again.",
   },
   {
     icon: '/MMnight.png',
+    preview: '/darkModeMap.jpeg',
     title: 'Dark Mode Map',
     desc: 'A dark campus map for late-night study runs, evening classes, and anyone who prefers dark mode.',
   },
   {
     icon: '/MMfavorite.png',
+    preview: '/saveFavorites.jpeg',
     title: 'Save Favorites',
     desc: 'Bookmark your most visited buildings for instant access.',
   },
   {
     icon: '/MMfree.png',
+    preview: '/completelyFree.jpeg',
     title: 'Completely Free',
     desc: "No subscriptions, no ads, no catches. Built by Cal Poly students, for Cal Poly students.",
   },
@@ -247,6 +253,15 @@ function AppStoreIcon({ size = 20 }) {
   );
 }
 
+function PhoneIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="7" y="2" width="10" height="20" rx="2.5" stroke="currentColor" strokeWidth="2" />
+      <path d="M10.5 18h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 /* ─── Navbar ─── */
 
 function Navbar() {
@@ -287,8 +302,8 @@ function Hero() {
           <p className="hero-desc">
             Navigation for California Polytechnic State University, San Luis Obispo —{' '}
             <strong>designed around how students actually move.</strong> Accurate
-            campus routes, key amenities, and specific destination
-            details to eliminate the guesswork.
+            campus routes, key amenities, and specific destination details to eliminate
+            the guesswork.
           </p>
 
           <div className="hero-actions">
@@ -337,18 +352,82 @@ function Hero() {
 
 /* ─── Features ─── */
 
-function FeatureCard({ feature }) {
+function FeatureCard({ feature, onPreview }) {
+  const openPreview = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onPreview(feature);
+  };
+
   return (
     <article className="feature-card">
       <div className="feature-card-inner">
-        <div className="feature-icon">
-          <img src={feature.icon} alt={feature.title} className="feature-icon-img" />
+        <div className="feature-card-top">
+          <div className="feature-icon">
+            <img src={feature.icon} alt={feature.title} className="feature-icon-img" />
+          </div>
+
+          <button
+            type="button"
+            className="feature-phone-btn"
+            onClick={openPreview}
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            aria-label={`Open ${feature.title} preview`}
+          >
+            <PhoneIcon />
+          </button>
         </div>
 
         <h3 className="feature-title">{feature.title}</h3>
         <p className="feature-desc">{feature.desc}</p>
+
+        <p className="feature-preview-hint">Click phone icon to preview</p>
       </div>
     </article>
+  );
+}
+
+function FeaturePreviewModal({ feature, onClose }) {
+  if (!feature) return null;
+
+  return (
+    <div className="feature-modal-overlay" onClick={onClose}>
+      <div className="feature-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="feature-modal-info">
+          <div className="feature-icon">
+            <img src={feature.icon} alt={feature.title} className="feature-icon-img" />
+          </div>
+
+          <h3 className="feature-modal-title">{feature.title}</h3>
+          <p className="feature-modal-desc">{feature.desc}</p>
+
+          <button type="button" className="feature-modal-button" onClick={onClose}>
+            Close Preview
+          </button>
+        </div>
+
+        <div className="feature-modal-phone">
+          <div className="feature-modal-phone-screen">
+            <img
+              src={feature.preview}
+              alt={`${feature.title} preview`}
+              className="feature-modal-img"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.nextSibling.style.display = 'flex';
+              }}
+            />
+
+            <div className="feature-preview-fallback">
+              <PhoneIcon size={34} />
+              <span>{feature.title} Preview</span>
+              <small>Add your image at {feature.preview}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -356,6 +435,7 @@ function FeatureCarousel() {
   const cardsPerView = useResponsiveCardsPerView();
   const [trackIndex, setTrackIndex] = useState(FEATURES.length);
   const [animated, setAnimated] = useState(true);
+  const [selectedFeature, setSelectedFeature] = useState(null);
 
   const dragStart = useRef(null);
   const dragDelta = useRef(0);
@@ -403,6 +483,22 @@ function FeatureCarousel() {
       return () => clearTimeout(timer);
     }
   }, [trackIndex]);
+
+  useEffect(() => {
+    if (!selectedFeature) return undefined;
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedFeature(null);
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [selectedFeature]);
 
   const getCardWidth = () => {
     if (!windowRef.current) return 0;
@@ -486,21 +582,11 @@ function FeatureCarousel() {
         </h2>
 
         <div className="feature-carousel-controls" aria-label="Feature carousel controls">
-          <button
-            type="button"
-            className="carousel-btn"
-            onClick={goPrev}
-            aria-label="Previous feature"
-          >
+          <button type="button" className="carousel-btn" onClick={goPrev} aria-label="Previous feature">
             ←
           </button>
 
-          <button
-            type="button"
-            className="carousel-btn"
-            onClick={goNext}
-            aria-label="Next feature"
-          >
+          <button type="button" className="carousel-btn" onClick={goNext} aria-label="Next feature">
             →
           </button>
         </div>
@@ -529,7 +615,7 @@ function FeatureCarousel() {
             }}
           >
             {LOOPED_FEATURES.map((feature, i) => (
-              <FeatureCard key={i} feature={feature} />
+              <FeatureCard key={`${feature.title}-${i}`} feature={feature} onPreview={setSelectedFeature} />
             ))}
           </div>
         </div>
@@ -547,6 +633,8 @@ function FeatureCarousel() {
           ))}
         </div>
       </Reveal>
+
+      <FeaturePreviewModal feature={selectedFeature} onClose={() => setSelectedFeature(null)} />
     </section>
   );
 }
