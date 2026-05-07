@@ -161,7 +161,7 @@ const TEAM = [
     role: 'Developer',
     year: '1st Year',
     major: 'Computer Engineering',
-    funFact: 'Fun fact here.',
+    funFact: 'I have done photography for Illuminate.',
   },
   {
     photo: '/rodney.png',
@@ -295,9 +295,13 @@ function Hero() {
             Cal Poly SLO · iOS App
           </div>
 
-          <h1 className="hero-title">
-            Navigate<br />campus<br /><em>your way.</em>
+          <h1 className="hero-title hero-brand-title">
+            Mustang<br />Maps
           </h1>
+
+          <p className="hero-subtitle">
+            Navigate campus<br /><em>your way.</em>
+          </p>
 
           <p className="hero-desc">
             Navigation for California Polytechnic State University, San Luis Obispo —{' '}

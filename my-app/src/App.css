@@ -223,6 +223,31 @@ body {
   color: var(--gold-light);
 }
 
+.hero-brand-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.6rem, 7vw, 6.5rem);
+  line-height: 0.88;
+  color: var(--cream);
+  margin-bottom: 1rem;
+  letter-spacing: -0.06em;
+}
+
+.hero-subtitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.55rem, 3.2vw, 2.8rem);
+  line-height: 0.95;
+  color: var(--gold-light);
+  margin-bottom: 2.3rem;
+  letter-spacing: -0.055em;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+
+.hero-subtitle em {
+  font-style: normal;
+  color: var(--gold-light);
+}
 
 .hero-desc {
   font-size: 1rem;
@@ -337,7 +362,7 @@ body {
   position: relative;
   width: 490px;
   height: 650px;
-  margin-bottom: 9.5rem;
+  margin-bottom: 12rem;
   transform: translateX(var(--phone-shift-x));
   animation: floatIn 1s 0.3s ease both;
 }
@@ -1428,6 +1453,18 @@ body {
   .hero-title {
     font-size: clamp(2.6rem, 10vw, 3.5rem);
     margin-bottom: 1.25rem;
+  }
+
+  .hero-brand-title {
+    font-size: clamp(2.7rem, 13vw, 4.2rem);
+    line-height: 0.88;
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.25rem, 5.8vw, 2rem);
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
   }
 
   .hero-desc {
