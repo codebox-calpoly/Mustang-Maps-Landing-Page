@@ -98,7 +98,7 @@ const TEAM = [
     role: 'Designer',
     year: '3rd Year',
     major: 'Graphic Communication',
-    funFact: 'Fun fact here.',
+    funFact: 'I have been to 6 national parks.',
   },
   {
     photo: '/jacob.png',
