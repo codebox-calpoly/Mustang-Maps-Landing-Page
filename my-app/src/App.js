@@ -436,16 +436,30 @@ function FeatureCarousel() {
   const [trackIndex, setTrackIndex] = useState(FEATURES.length);
   const [animated, setAnimated] = useState(true);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [arrowAnim, setArrowAnim] = useState('');
 
   const dragStart = useRef(null);
   const dragDelta = useRef(0);
   const isDragging = useRef(false);
   const trackRef = useRef(null);
   const windowRef = useRef(null);
+  const wheelLocked = useRef(false);
 
   const realIndex = ((trackIndex % FEATURES.length) + FEATURES.length) % FEATURES.length;
   const maxDotIndex = FEATURES.length - cardsPerView;
   const dotIndex = Math.min(realIndex, maxDotIndex);
+
+  const triggerArrowAnimation = (direction) => {
+    setArrowAnim('');
+
+    requestAnimationFrame(() => {
+      setArrowAnim(direction === 'next' ? 'carousel-bump-next' : 'carousel-bump-prev');
+    });
+
+    setTimeout(() => {
+      setArrowAnim('');
+    }, 380);
+  };
 
   const goNext = () => {
     setAnimated(true);
@@ -455,6 +469,16 @@ function FeatureCarousel() {
   const goPrev = () => {
     setAnimated(true);
     setTrackIndex((i) => i - 1);
+  };
+
+  const handleArrowNext = () => {
+    triggerArrowAnimation('next');
+    goNext();
+  };
+
+  const handleArrowPrev = () => {
+    triggerArrowAnimation('prev');
+    goPrev();
   };
 
   const goToDot = (index) => {
@@ -503,6 +527,30 @@ function FeatureCarousel() {
   const getCardWidth = () => {
     if (!windowRef.current) return 0;
     return windowRef.current.offsetWidth / cardsPerView;
+  };
+
+  const onWheel = (e) => {
+    const horizontalAmount = e.deltaX;
+    const verticalAmount = e.deltaY;
+
+    if (Math.abs(horizontalAmount) < Math.abs(verticalAmount)) return;
+    if (Math.abs(horizontalAmount) < 18) return;
+
+    e.preventDefault();
+
+    if (wheelLocked.current) return;
+
+    wheelLocked.current = true;
+
+    if (horizontalAmount > 0) {
+      goNext();
+    } else {
+      goPrev();
+    }
+
+    setTimeout(() => {
+      wheelLocked.current = false;
+    }, 420);
   };
 
   const onDragStart = (clientX) => {
@@ -582,11 +630,11 @@ function FeatureCarousel() {
         </h2>
 
         <div className="feature-carousel-controls" aria-label="Feature carousel controls">
-          <button type="button" className="carousel-btn" onClick={goPrev} aria-label="Previous feature">
+          <button type="button" className="carousel-btn" onClick={handleArrowPrev} aria-label="Previous feature">
             ←
           </button>
 
-          <button type="button" className="carousel-btn" onClick={goNext} aria-label="Next feature">
+          <button type="button" className="carousel-btn" onClick={handleArrowNext} aria-label="Next feature">
             →
           </button>
         </div>
@@ -594,8 +642,9 @@ function FeatureCarousel() {
 
       <Reveal className="feature-carousel-shell">
         <div
-          className="feature-carousel-window"
+          className={`feature-carousel-window ${arrowAnim}`}
           ref={windowRef}
+          onWheel={onWheel}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
@@ -603,7 +652,11 @@ function FeatureCarousel() {
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
-          style={{ cursor: 'grab', userSelect: 'none' }}
+          style={{
+            cursor: 'grab',
+            userSelect: 'none',
+            overscrollBehaviorX: 'contain',
+          }}
         >
           <div
             ref={trackRef}

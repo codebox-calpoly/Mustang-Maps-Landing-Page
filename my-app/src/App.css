@@ -638,6 +638,44 @@ body {
 }
 
 
+/* ─── Carousel Arrow Click Animation ─── */
+.carousel-bump-next {
+  animation: carouselNudgeNext 0.32s ease;
+}
+
+.carousel-bump-prev {
+  animation: carouselNudgePrev 0.32s ease;
+}
+
+@keyframes carouselNudgeNext {
+  0% {
+    transform: translateX(0);
+  }
+
+  45% {
+    transform: translateX(-8px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes carouselNudgePrev {
+  0% {
+    transform: translateX(0);
+  }
+
+  45% {
+    transform: translateX(8px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
 /* ─── Feature Preview Modal ─── */
 .feature-modal-overlay {
   position: fixed;
