@@ -331,14 +331,6 @@ function Hero() {
           </div>
         </div>
       </div>
-
-      <div className="hero-divider">
-        <img className="codebox-logo" src="/codebox.png" alt="CodeBox" height="36" />
-
-        <span className="hero-divider-text">
-          <strong>Built through CodeBox</strong> — a student-run organization at Cal Poly SLO
-        </span>
-      </div>
     </section>
   );
 }
