@@ -45,12 +45,12 @@ body {
 
 
 /* ─── Scroll Reveal ─── */
+/* delay support for staggered team cards */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity 0.7s ease var(--delay, 0ms), transform 0.7s ease var(--delay, 0ms);
 }
-
 
 .reveal.visible {
   opacity: 1;
@@ -86,20 +86,6 @@ body {
   display: block;
 }
 
-
-.nav-team-link {
-  color: rgba(245, 240, 232, 0.65);
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s;
-  margin-right: auto;
-  margin-left: 1.5rem;
-}
-
-.nav-team-link:hover {
-  color: var(--cream);
-}
 
 
 .nav-cta {
@@ -491,37 +477,13 @@ body {
 }
 
 
-.feature-carousel-controls {
-  display: flex;
-  gap: 0.75rem;
-  margin-right: 2.8rem;
-}
-
-
-.carousel-btn {
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(26, 51, 40, 0.18);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.6);
-  color: var(--forest);
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  backdrop-filter: blur(8px);
-}
-
-
-.carousel-btn:hover {
-  background: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(26, 51, 40, 0.15);
-}
-
-
 .feature-carousel-window {
   overflow: hidden;
   background: transparent;
+}
+
+.feature-carousel-window:active {
+  cursor: grabbing;
 }
 
 
@@ -532,7 +494,6 @@ body {
 }
 
 
-/* Outer card: controls width + padding creates visual gaps */
 .feature-carousel-track .feature-card {
   flex: 0 0 calc(100% / var(--features-per-view, 3));
   padding: 0.5rem;
@@ -541,7 +502,6 @@ body {
 }
 
 
-/* Inner card: the visible rounded tile */
 .feature-card-inner {
   background: var(--cream);
   border-radius: 20px;
@@ -750,6 +710,181 @@ body {
 }
 
 
+/* ─── Meet the Team Section ─── */
+.team-grid-section {
+  background: var(--forest-mid);
+  padding: 6rem 7rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.team-grid-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+}
+
+.team-grid-section::after {
+  content: '';
+  position: absolute;
+  top: -180px;
+  right: -180px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(46, 125, 82, 0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.team-grid-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  margin-bottom: 0.75rem;
+}
+
+.team-grid-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 4rem;
+}
+
+.team-grid-heading em {
+  font-style: normal;
+  color: var(--gold-light);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+/* ─── Member Card ─── */
+.member-card-reveal {
+  display: flex;
+}
+
+.member-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border: 1px solid rgba(26, 51, 40, 0.07);
+  box-shadow: 0 2px 16px rgba(26, 51, 40, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  width: 100%;
+}
+
+.member-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(26, 51, 40, 0.12);
+}
+
+.member-avatar-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--forest);
+  border: 3px solid rgba(46, 125, 82, 0.2);
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.member-initials-fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: rgba(245, 240, 232, 0.9);
+  background: var(--forest);
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.member-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--forest);
+  line-height: 1.2;
+}
+
+.member-role {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.member-bio {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+/* ─── CodeBox Band ─── */
+.codebox-band {
+  background: linear-gradient(160deg, #ddeae0 0%, #cfe0d4 100%);
+  padding: 4.5rem 7rem;
+}
+
+.codebox-band-inner {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 760px;
+}
+
+.codebox-band-logo {
+  width: auto;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.codebox-band-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--forest);
+  margin-bottom: 0.5rem;
+}
+
+.codebox-band-desc {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+
 /* ─── Footer ─── */
 .footer {
   background: var(--forest);
@@ -822,8 +957,24 @@ body {
 
 
 /* ═══════════════════════════════════════════
-   RESPONSIVE — desktop above is untouched
+   RESPONSIVE
    ═══════════════════════════════════════════ */
+
+/* ─── Tablet (≤1024px) — team grid 3 columns ─── */
+@media (max-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .team-grid-section {
+    padding: 5rem 3rem;
+  }
+
+  .codebox-band {
+    padding: 3.5rem 3rem;
+  }
+}
+
 
 /* ─── Tablet (≤900px) ─── */
 @media (max-width: 900px) {
@@ -842,7 +993,6 @@ body {
     padding-top: 5rem;
   }
 
-  /* tame the 7rem left / 10rem bottom padding on tablet */
   .hero-left {
     padding: 2rem 1rem 4rem 2.5rem;
   }
@@ -890,11 +1040,6 @@ body {
     gap: 1.5rem;
   }
 
-  .feature-carousel-controls {
-    margin-left: var(--section-title-offset);
-    margin-right: 0;
-  }
-
   .how {
     padding: var(--section-padding-y) var(--section-padding-x);
   }
@@ -922,6 +1067,23 @@ body {
 }
 
 
+/* ─── Tablet (≤768px) — team grid 2 columns ─── */
+@media (max-width: 768px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .team-grid-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .codebox-band {
+    padding: 3rem 1.5rem;
+  }
+}
+
+
 /* ─── Mobile (≤600px) ─── */
 @media (max-width: 600px) {
   :root {
@@ -931,16 +1093,10 @@ body {
     --section-title-bottom: 2rem;
   }
 
-  /* ── Nav ── */
   .nav {
     padding: 0.9rem 1.25rem;
   }
 
-  .nav-team-link {
-    display: none;
-  }
-
-  /* ── Hero: full-screen, stacked ── */
   .hero {
     height: auto;
     min-height: 100svh;
@@ -993,7 +1149,6 @@ body {
     font-size: 1.5rem;
   }
 
-  /* ── Phones: centered below text, no clipping ── */
   .hero-right {
     height: auto;
     align-items: center;
@@ -1003,7 +1158,6 @@ body {
   }
 
   .phones-wrapper {
-    /* wide enough for both phones side-by-side */
     width: 290px;
     height: 310px;
     margin: 0 auto;
@@ -1025,7 +1179,6 @@ body {
     border-radius: 26px;
   }
 
-  /* ── CodeBox bar: logo stays left, text wraps beside it ── */
   .hero-divider {
     padding: 1.25rem;
     gap: 0.75rem;
@@ -1038,13 +1191,11 @@ body {
     text-align: left;
   }
 
-  /* ── Section headings ── */
   .section-heading {
     font-size: clamp(1.75rem, 7vw, 2.5rem);
     margin-left: 0;
   }
 
-  /* ── Features ── */
   .features-header {
     gap: 1rem;
     margin-bottom: 2rem;
@@ -1054,11 +1205,7 @@ body {
     padding: 1.75rem;
   }
 
-  .feature-carousel-controls {
-    margin-left: 0;
-  }
 
-  /* ── Steps ── */
   .step {
     padding: 2rem 1.5rem;
   }
@@ -1067,15 +1214,51 @@ body {
     font-size: 2.75rem;
   }
 
-  /* ── CTA ── */
   .cta-right {
     align-items: flex-start;
     text-align: left;
   }
 
-  /* ── Footer ── */
   .footer {
     padding: 1.75rem 1.25rem;
     gap: 0.75rem;
   }
+
+  /* ─── Team ─── */
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .team-grid-section {
+    padding: 3.5rem 1.25rem;
+  }
+
+  .team-grid-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .codebox-band {
+    padding: 3rem 1.25rem;
+  }
+
+  .codebox-band-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+}
+
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
 }

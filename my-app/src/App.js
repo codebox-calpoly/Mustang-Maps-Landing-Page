@@ -1,44 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import TeamPage from './Team';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/mustangmaps/id6762173770';
 
 const FEATURES = [
   {
-    icon: '🗺️',
+    icon: '/MMbuilding.png',
     title: 'Building-to-Building Routes',
     desc: 'Accurate walking paths between any two buildings on campus. No more zigzagging or guessing.',
   },
   {
-    icon: '🚿',
+    icon: '/MMamenity.png',
     title: 'Key Amenities',
     desc: 'Find bathrooms, water fountains, and printer — shown across the whole campus at once.',
   },
   {
-    icon: '🎓',
+    icon: '/MMclass.png',
     title: 'Classroom Finder',
     desc: "Know which floor and room you're heading to before you walk through the door. Never be late on week one again.",
   },
   {
-    icon: '🌙',
+    icon: '/MMnight.png',
     title: 'Dark Mode Map',
     desc: 'A dark campus map for late-night study runs, evening classes, and anyone who prefers dark mode.',
   },
   {
-    icon: '⭐',
+    icon: '/MMfavorite.png',
     title: 'Save Favorites',
     desc: 'Bookmark your most visited buildings for instant access.',
   },
   {
-    icon: '🆓',
+    icon: '/MMfree.png',
     title: 'Completely Free',
     desc: "No subscriptions, no ads, no catches. Built by Poly students, for Poly students.",
   },
 ];
 
-// Triple the array so we always have clones on both sides
 const LOOPED_FEATURES = [...FEATURES, ...FEATURES, ...FEATURES];
 
 const HOW_STEPS = [
@@ -59,6 +57,119 @@ const HOW_STEPS = [
   },
 ];
 
+const TEAM = [
+  {
+    photo: '/idhika.png',
+    initials: 'IN',
+    name: 'Idhika Nagalingam',
+    role: 'Product Manager',
+    year: '1st Year',
+    major: 'Electrical Engineering',
+    funFact: 'I have lived in 4 countries.',
+  },
+  {
+    photo: '/winnie.png',
+    initials: 'WT',
+    name: 'Winnie Trinh',
+    role: 'Project Lead',
+    year: '3rd Year',
+    major: 'Computer Science',
+    funFact: 'I love squirrels.',
+  },
+  {
+    photo: '/sid.png',
+    initials: 'SB',
+    name: 'Siddharth Balaji',
+    role: 'Project Lead',
+    year: '1st Year',
+    major: 'Computer Science',
+    funFact: 'I have fed a kangaroo.',
+  },
+  {
+    photo: '/stella.png',
+    initials: 'SK',
+    name: 'Stella Kwon',
+    role: 'Designer',
+    year: '3rd Year',
+    major: 'Graphic Communication',
+    funFact: 'Fun fact here.',
+  },
+  {
+    photo: '/jacob.png',
+    initials: 'JL',
+    name: 'Jacob Lee',
+    role: 'Developer',
+    year: '2nd Year',
+    major: 'Computer Science',
+    funFact: 'Fun fact here.',
+  },
+  {
+    photo: '/snehil.png',
+    initials: 'SK',
+    name: 'Snehil Kakani',
+    role: 'Developer',
+    year: '1st Year',
+    major: 'Computer Science',
+    funFact: 'I produce music.',
+  },
+  {
+    photo: '/scout.png',
+    initials: 'SKP',
+    name: 'Scout Knight-Pheng',
+    role: 'Developer',
+    year: '1st Year',
+    major: 'Computer Science',
+    funFact: 'I can juggle.',
+  },
+  {
+    photo: '/daniel.png',
+    initials: 'DE',
+    name: 'Daniel Erazo',
+    role: 'Developer',
+    year: '1st Year',
+    major: 'Computer Engineering',
+    funFact: 'I am caught up to all of One Piece.',
+  },
+  {
+    photo: '/ally.png',
+    initials: 'AS',
+    name: 'Ally Stauffer',
+    role: 'Developer',
+    year: '2nd Year',
+    major: 'Computer Science',
+    funFact: 'I grew up doing ballet.',
+  },
+  {
+    photo: '/nick.png',
+    initials: 'NE',
+    name: 'Nick Endresen',
+    role: 'Developer',
+    year: '1st Year',
+    major: 'Computer Science',
+    funFact: 'My team won the FRC Robotics Championship last year.',
+  },
+  {
+    photo: '/aswath.png',
+    initials: 'AS',
+    name: 'Aswath Subramanian',
+    role: 'Developer',
+    year: '1st Year',
+    major: 'Computer Engineering',
+    funFact: 'Fun fact here.',
+  },
+  {
+    photo: '/rodney.png',
+    initials: 'RF',
+    name: 'Rodney Fujiyama',
+    role: 'Developer',
+    year: '1st Year',
+    major: 'Computer Science',
+    funFact: 'I have a lot of allergies.',
+  },
+];
+
+/* ─── Shared Hooks ─── */
+
 function getCardsPerView() {
   if (typeof window === 'undefined') return 3;
   if (window.innerWidth <= 600) return 1;
@@ -77,7 +188,7 @@ function useScrollReveal() {
       ([entry]) => {
         if (entry.isIntersecting) el.classList.add('visible');
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
     observer.observe(el);
@@ -112,10 +223,17 @@ function useResponsiveCardsPerView() {
   return cardsPerView;
 }
 
-function Reveal({ children, className = '' }) {
+/* ─── Shared Components ─── */
+
+function Reveal({ children, className = '', delay = 0 }) {
   const ref = useScrollReveal();
+
   return (
-    <div ref={ref} className={`reveal ${className}`.trim()}>
+    <div
+      ref={ref}
+      className={`reveal ${className}`.trim()}
+      style={{ '--delay': `${delay}ms` }}
+    >
       {children}
     </div>
   );
@@ -129,6 +247,8 @@ function AppStoreIcon({ size = 20 }) {
   );
 }
 
+/* ─── Navbar ─── */
+
 function Navbar() {
   const scrolled = useNavScroll();
 
@@ -137,14 +257,15 @@ function Navbar() {
       <a href="/" className="nav-logo">
         <img src="/mustangmapsv1.png" alt="Mustang Maps" height="36" />
       </a>
-      {/* ── Added Meet the Team link ── */}
-      <Link to="/team" className="nav-team-link">Meet the Team</Link>
+
       <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="nav-cta">
         Get the App
       </a>
     </header>
   );
 }
+
+/* ─── Hero ─── */
 
 function Hero() {
   return (
@@ -175,7 +296,10 @@ function Hero() {
               <AppStoreIcon />
               Download on the App Store
             </a>
-            <a href="#features" className="btn-ghost">See features →</a>
+
+            <a href="#features" className="btn-ghost">
+              See features →
+            </a>
           </div>
 
           <div className="hero-stats">
@@ -183,6 +307,7 @@ function Hero() {
               <span className="stat-num">200+</span>
               <span className="stat-label">Buildings mapped</span>
             </div>
+
             <div>
               <span className="stat-num">Free</span>
               <span className="stat-label">On the app store</span>
@@ -197,6 +322,7 @@ function Hero() {
                 <img src="/phone-back.png" alt="App dark mode screenshot" />
               </div>
             </div>
+
             <div className="phone phone-front">
               <div className="phone-screen">
                 <img src="/phone-front.png" alt="App screenshot" />
@@ -208,6 +334,7 @@ function Hero() {
 
       <div className="hero-divider">
         <img className="codebox-logo" src="/codebox.png" alt="CodeBox" height="36" />
+
         <span className="hero-divider-text">
           <strong>Built through CodeBox</strong> — a student-run organization at Cal Poly SLO
         </span>
@@ -216,11 +343,16 @@ function Hero() {
   );
 }
 
+/* ─── Features ─── */
+
 function FeatureCard({ feature }) {
   return (
     <article className="feature-card">
       <div className="feature-card-inner">
-        <div className="feature-icon">{feature.icon}</div>
+        <div className="feature-icon">
+          <img src={feature.icon} alt={feature.title} className="feature-icon-img" />
+        </div>
+
         <h3 className="feature-title">{feature.title}</h3>
         <p className="feature-desc">{feature.desc}</p>
       </div>
@@ -230,12 +362,15 @@ function FeatureCard({ feature }) {
 
 function FeatureCarousel() {
   const cardsPerView = useResponsiveCardsPerView();
-
-  // Start in the middle copy of the tripled array
   const [trackIndex, setTrackIndex] = useState(FEATURES.length);
   const [animated, setAnimated] = useState(true);
 
-  // Which real feature index are we at (for dots)
+  const dragStart = useRef(null);
+  const dragDelta = useRef(0);
+  const isDragging = useRef(false);
+  const trackRef = useRef(null);
+  const windowRef = useRef(null);
+
   const realIndex = ((trackIndex % FEATURES.length) + FEATURES.length) % FEATURES.length;
   const maxDotIndex = FEATURES.length - cardsPerView;
   const dotIndex = Math.min(realIndex, maxDotIndex);
@@ -252,31 +387,104 @@ function FeatureCarousel() {
 
   const goToDot = (index) => {
     setAnimated(true);
-    // Always jump to the middle copy at that dot position
     setTrackIndex(FEATURES.length + index);
   };
 
-  // After the slide animation finishes, silently snap back into the real section
   useEffect(() => {
-    // Upper boundary: entered the third copy
     if (trackIndex >= FEATURES.length * 2) {
       const timer = setTimeout(() => {
         setAnimated(false);
         setTrackIndex((i) => i - FEATURES.length);
         setTimeout(() => setAnimated(true), 50);
       }, 350);
+
       return () => clearTimeout(timer);
     }
-    // Lower boundary: entered the first copy
+
     if (trackIndex < FEATURES.length) {
       const timer = setTimeout(() => {
         setAnimated(false);
         setTrackIndex((i) => i + FEATURES.length);
         setTimeout(() => setAnimated(true), 50);
       }, 350);
+
       return () => clearTimeout(timer);
     }
   }, [trackIndex]);
+
+  const getCardWidth = () => {
+    if (!windowRef.current) return 0;
+    return windowRef.current.offsetWidth / cardsPerView;
+  };
+
+  const onDragStart = (clientX) => {
+    isDragging.current = true;
+    dragStart.current = clientX;
+    dragDelta.current = 0;
+
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'none';
+    }
+  };
+
+  const onDragMove = (clientX) => {
+    if (!isDragging.current) return;
+
+    dragDelta.current = clientX - dragStart.current;
+    const baseTranslate = -(trackIndex * (100 / cardsPerView));
+
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(calc(${baseTranslate}% + ${dragDelta.current}px))`;
+    }
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging.current) return;
+
+    isDragging.current = false;
+    const threshold = getCardWidth() * 0.2;
+
+    if (trackRef.current) {
+      trackRef.current.style.transform = '';
+    }
+
+    if (dragDelta.current < -threshold) {
+      goNext();
+    } else if (dragDelta.current > threshold) {
+      goPrev();
+    } else {
+      setAnimated(true);
+      setTrackIndex((i) => i);
+    }
+
+    dragDelta.current = 0;
+  };
+
+  const onMouseDown = (e) => {
+    e.preventDefault();
+    onDragStart(e.clientX);
+  };
+
+  const onMouseMove = (e) => {
+    if (isDragging.current) onDragMove(e.clientX);
+  };
+
+  const onMouseUp = () => onDragEnd();
+
+  const onMouseLeave = () => {
+    if (isDragging.current) onDragEnd();
+  };
+
+  const onTouchStart = (e) => {
+    onDragStart(e.touches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    e.preventDefault();
+    onDragMove(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => onDragEnd();
 
   return (
     <section className="features" id="features">
@@ -286,18 +494,41 @@ function FeatureCarousel() {
         </h2>
 
         <div className="feature-carousel-controls" aria-label="Feature carousel controls">
-          <button type="button" className="carousel-btn" onClick={goPrev} aria-label="Previous feature">
+          <button
+            type="button"
+            className="carousel-btn"
+            onClick={goPrev}
+            aria-label="Previous feature"
+          >
             ←
           </button>
-          <button type="button" className="carousel-btn" onClick={goNext} aria-label="Next feature">
+
+          <button
+            type="button"
+            className="carousel-btn"
+            onClick={goNext}
+            aria-label="Next feature"
+          >
             →
           </button>
         </div>
       </Reveal>
 
       <Reveal className="feature-carousel-shell">
-        <div className="feature-carousel-window">
+        <div
+          className="feature-carousel-window"
+          ref={windowRef}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          style={{ cursor: 'grab', userSelect: 'none' }}
+        >
           <div
+            ref={trackRef}
             className="feature-carousel-track"
             style={{
               '--features-per-view': cardsPerView,
@@ -328,6 +559,8 @@ function FeatureCarousel() {
   );
 }
 
+/* ─── How It Works ─── */
+
 function HowItWorks() {
   return (
     <section className="how">
@@ -350,6 +583,8 @@ function HowItWorks() {
   );
 }
 
+/* ─── CTA ─── */
+
 function CTASection() {
   return (
     <section className="cta-section">
@@ -364,6 +599,7 @@ function CTASection() {
           Mustang Maps is free and designed by people who walk the same campus you do.
           Download it before your next class.
         </p>
+
         <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
           <AppStoreIcon size={18} />
           Download on App Store
@@ -373,19 +609,82 @@ function CTASection() {
   );
 }
 
+/* ─── Meet the Team ─── */
+
+function MemberCard({ member, index }) {
+  return (
+    <Reveal className="member-card-reveal" delay={index * 50}>
+      <article className="member-card">
+        <div className="member-avatar-wrap">
+          <img
+            src={member.photo}
+            alt={member.name}
+            className="member-photo"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+
+          <div className="member-initials-fallback">{member.initials}</div>
+        </div>
+
+        <div className="member-info">
+          <h3 className="member-name">{member.name}</h3>
+          <span className="member-role">{member.role}</span>
+
+          <div className="member-bio">
+            <p><strong>Year:</strong> {member.year}</p>
+            <p><strong>Major:</strong> {member.major}</p>
+            <p><strong>Fun fact:</strong> {member.funFact}</p>
+          </div>
+        </div>
+      </article>
+    </Reveal>
+  );
+}
+
+function TeamSection() {
+  return (
+    <section className="team-grid-section" id="team">
+      <Reveal>
+        <p className="team-grid-label">The Team</p>
+
+        <h2 className="team-grid-heading">
+          Students building for
+          <br />
+          <em>students.</em>
+        </h2>
+      </Reveal>
+
+      <div className="team-grid">
+        {TEAM.map((member, i) => (
+          <MemberCard key={i} member={member} index={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ─── Footer ─── */
+
 function Footer() {
   return (
     <footer className="footer">
       <span className="footer-logo">Mustang Maps</span>
+
       <div className="footer-links">
-        <a href="https://calpoly.edu" target="_blank" rel="noopener noreferrer">Cal Poly</a>
-        {/* ── Added Meet the Team link ── */}
-        <Link to="/team">Meet the Team</Link>
+        <a href="https://calpoly.edu" target="_blank" rel="noopener noreferrer">
+          Cal Poly
+        </a>
       </div>
+
       <span className="footer-copy">© 2025 CodeBox · Cal Poly SLO</span>
     </footer>
   );
 }
+
+/* ─── Page ─── */
 
 function HomePage() {
   return (
@@ -395,6 +694,7 @@ function HomePage() {
       <FeatureCarousel />
       <HowItWorks />
       <CTASection />
+      <TeamSection />
       <Footer />
     </div>
   );
@@ -405,7 +705,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/team" element={<TeamPage />} />
       </Routes>
     </BrowserRouter>
   );
