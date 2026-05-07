@@ -7,8 +7,8 @@ const APP_STORE_URL = 'https://apps.apple.com/us/app/mustangmaps/id6762173770';
 const FEATURES = [
   {
     icon: '/MMbuilding.png',
-    title: 'Building-to-Building Routes',
-    desc: 'Accurate walking paths between any two buildings on campus. No more zigzagging or guessing.',
+    title: 'Campus Routes',
+    desc: 'Find clear walking paths across campus. No more zigzagging or guessing.',
   },
   {
     icon: '/MMamenity.png',
@@ -33,7 +33,7 @@ const FEATURES = [
   {
     icon: '/MMfree.png',
     title: 'Completely Free',
-    desc: "No subscriptions, no ads, no catches. Built by Poly students, for Poly students.",
+    desc: "No subscriptions, no ads, no catches. Built by Cal Poly students, for Cal Poly students.",
   },
 ];
 
@@ -287,7 +287,7 @@ function Hero() {
           <p className="hero-desc">
             Navigation for California Polytechnic State University, San Luis Obispo —{' '}
             <strong>designed around how students actually move.</strong> Accurate
-            building-to-building routes, key amenities, and specific destination
+            campus routes, key amenities, and specific destination
             details to eliminate the guesswork.
           </p>
 
