@@ -333,11 +333,11 @@ body {
 
 
 .phones-wrapper {
-  --phone-shift-x: -45px;
+  --phone-shift-x: -55px;
   position: relative;
-  width: 420px;
-  height: 580px;
-  margin-bottom: 12rem;
+  width: 490px;
+  height: 650px;
+  margin-bottom: 9.5rem;
   transform: translateX(var(--phone-shift-x));
   animation: floatIn 1s 0.3s ease both;
 }
@@ -345,25 +345,43 @@ body {
 
 .phone {
   position: absolute;
-  border-radius: 38px;
-  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 46px;
+  padding: 11px;
+  background: #111;
   overflow: hidden;
+  box-shadow:
+    0 34px 78px rgba(0, 0, 0, 0.44),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
 
-.phone-screen,
-.phone-screen img {
-  width: 100%;
-  height: 100%;
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 78px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
 
 .phone-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 37px;
   overflow: hidden;
+  background: var(--forest);
+  position: relative;
 }
 
 
 .phone-screen img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center top;
   display: block;
@@ -371,30 +389,21 @@ body {
 
 
 .phone-front {
-  width: 230px;
-  height: 480px;
-  left: 20px;
+  width: 260px;
+  height: 540px;
+  left: 25px;
   bottom: 0;
   z-index: 2;
-  background: #f8f8f8;
-  box-shadow:
-    0 40px 80px rgba(0, 0, 0, 0.55),
-    20px 0 40px rgba(0, 0, 0, 0.3),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 
 .phone-back {
-  width: 210px;
-  height: 450px;
-  left: 240px;
-  bottom: 30px;
+  width: 235px;
+  height: 505px;
+  left: 280px;
+  bottom: 32px;
   z-index: 1;
-  background: #111;
   transform: rotate(5deg);
-  box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 
@@ -640,14 +649,14 @@ body {
 
 /* ─── Carousel Arrow Click Animation ─── */
 .carousel-bump-next {
-  animation: carouselNudgeNext 0.32s ease;
+  animation: carouselSlideNext 0.32s ease;
 }
 
 .carousel-bump-prev {
-  animation: carouselNudgePrev 0.32s ease;
+  animation: carouselSlidePrev 0.32s ease;
 }
 
-@keyframes carouselNudgeNext {
+@keyframes carouselSlideNext {
   0% {
     transform: translateX(0);
   }
@@ -661,7 +670,7 @@ body {
   }
 }
 
-@keyframes carouselNudgePrev {
+@keyframes carouselSlidePrev {
   0% {
     transform: translateX(0);
   }
@@ -1285,22 +1294,37 @@ body {
 
   .phones-wrapper {
     --phone-shift-x: 0px;
-    width: 260px;
-    height: 380px;
+    width: 310px;
+    height: 430px;
     margin-bottom: 0;
   }
 
+  .phone {
+    border-radius: 36px;
+    padding: 8px;
+  }
+
+  .phone::before {
+    top: 13px;
+    width: 54px;
+    height: 5px;
+  }
+
+  .phone-screen {
+    border-radius: 28px;
+  }
+
   .phone-front {
-    width: 160px;
-    height: 335px;
+    width: 180px;
+    height: 375px;
     left: 10px;
     bottom: 0;
   }
 
   .phone-back {
-    width: 150px;
-    height: 310px;
-    left: 160px;
+    width: 165px;
+    height: 345px;
+    left: 180px;
     bottom: 20px;
   }
 
@@ -1441,25 +1465,38 @@ body {
 
   .phones-wrapper {
     --phone-shift-x: 0px;
-    width: 290px;
-    height: 310px;
+    width: 335px;
+    height: 365px;
     margin: 0 auto;
   }
 
+  .phone {
+    border-radius: 32px;
+    padding: 7px;
+  }
+
+  .phone::before {
+    top: 11px;
+    width: 46px;
+    height: 4px;
+  }
+
+  .phone-screen {
+    border-radius: 25px;
+  }
+
   .phone-front {
-    width: 140px;
-    height: 290px;
+    width: 155px;
+    height: 320px;
     left: 10px;
     bottom: 0;
-    border-radius: 28px;
   }
 
   .phone-back {
-    width: 130px;
-    height: 265px;
-    left: 150px;
+    width: 145px;
+    height: 295px;
+    left: 165px;
     bottom: 15px;
-    border-radius: 26px;
   }
 
   .section-heading {
